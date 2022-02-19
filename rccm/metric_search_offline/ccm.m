@@ -1,32 +1,35 @@
 function [cond_num_W_opt,W_upper,W_lower,W_bar,max_residual] = ccm(plant,controller,W,dW_dt,paras_W,lambda,state_set)
 n = plant.n;nu = plant.nu;
-y = sdpvar(n,1); W_bar = sdpvar(n,n,'symmetric');
+y = sdpvar(n,1);
 % PSD constraint: equation (11)
 if controller.ccm_mat_ineq_form == CtrlDesignOpts.ccm_mat_ineq_use_rho    
     M_pos = dW_dt - plant.df_dx*W - (plant.df_dx*W)'+controller.rho*(plant.B*plant.B')-2*lambda*W;
     y1 = y;
     paras = [paras_W;vec(controller.c_rho)];
 elseif controller.ccm_mat_ineq_form == CtrlDesignOpts.ccm_mat_ineq_use_B_perp
-     M_pos = plant.B_perp'*(dW_dt - plant.df_dx*W - (plant.df_dx*W)'-2*lambda*W)*plant.B_perp;
-    y1 = y(1:n-nu);
+    M_pos = plant.B_perp'*(dW_dt - plant.df_dx*W - (plant.df_dx*W)'-2*lambda*W)*plant.B_perp;
+%     y1 = y(1:n-nu);
+    y1 = sdpvar(n-nu,1);
     paras = paras_W;
 end
-
 yMy = y1'*M_pos*y1;
 W_lower = sdpvar;
 W_upper = sdpvar;
-ops =sdpsettings('solver','mosek');
 obj = W_upper;
-
-y_Wupper_W_y =  y'*(W_bar-W)*y;
-y_W_Wlower_y =  y'*(W-W_lower*eye(n))*y;
-
+W_bar = sdpvar(n,n,'symmetric');
+F = [];
+if ~isa(dW_dt,'sdpvar') % indicates that W is constant, i.e., state independent
+else
+    y_Wupper_W_y =  y'*(W_bar-W)*y;
+    y_W_Wlower_y =  y'*W*y-W_lower*(y'*y);
+end
 paras = [paras;W_lower;W_bar(:)];
-F = [];  
+
+  
 if state_set.consider_state_set == 1
-    % considering the compact set for states using S procedure        
+    % considering the state constraints using S procedure        
     for i=1:length(state_set.box_lim)               
-        if i<= state_set.num_consts_4_W_states            
+        if i<= state_set.num_consts_4_W_states && isa(dW_dt,'sdpvar')     % only when W is state dependent
             % Lagrange multiliers for enforcing constraints
             [~,c_Ll,v_Ll] = polynomial([state_set.W_states;y],state_set.lagrange_deg_W);
             if ~(isfield(state_set,'lagrange_quadratic_only') && state_set.lagrange_quadratic_only == 0)
@@ -67,7 +70,7 @@ if state_set.consider_state_set == 1
              % only take the terms quadratic in y
             index = [];
             for k=1:length(v_Lm)
-                if sum(degree(v_Lm(k),y)) == 2
+                if sum(degree(v_Lm(k),y1)) == 2
                     index = [index k];
                 end
             end
@@ -80,8 +83,12 @@ if state_set.consider_state_set == 1
         F = [F sos(Lm)];    
     end
 end
-F = [F sos(yMy) sos(y_W_Wlower_y) sos(y_Wupper_W_y) W_lower >= controller.W_lower_bound  W_upper*eye(n)>=W_bar]; % 
-
+if ~isa(dW_dt,'sdpvar')  % indicates that W is constant
+    F = [F sos(yMy) W_bar>=W  W>=W_lower*eye(n) W_lower>= controller.W_lower_bound  W_upper*eye(n)>=W_bar];
+else
+    F = [F sos(yMy) sos(y_W_Wlower_y) sos(y_Wupper_W_y) W_lower>= controller.W_lower_bound  W_upper*eye(n)>=W_bar]; 
+end
+ops = sdpsettings('solver','mosek','sos.numblkdg',1e-7); %, Need to try this
 [sol,v,Q,res] = solvesos(F,obj,ops,paras);
 max_residual = max(res)
 disp(sol.info);

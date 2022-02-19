@@ -1,5 +1,5 @@
 function g = energyGradient(c,n,D,N,T,T_dot,w,W_fcn,dW_fcn) 
-%% Compute the gradient of the Riemann Energy under the pseudospectral method
+%% Compute the gradient of the Riemann Energy using the pseudospectral method
 persistent c_pre g_pre;
 if isempty(c_pre)  % adding this may make the gradient calculatioin inaccurate
     c_pre = zeros(n,D+1);
@@ -17,20 +17,14 @@ if norm(c-c_pre)> 1e-5
 gamma = c*T;
 gamma_s = c*T_dot;
 g = zeros(1,(D+1)*n);  
-%     M_x_gamma_s = zeros(n,N+1);
 
 % vectorized format
 for k = 1:N+1   
-    if norm(gamma(3:end,k))> 10
-        disp('gamma norm is out of range');
-    end
     W_fcn_eval = W_fcn(gamma(:,k));
-%         M_x_gamma_sk = (W_fcn(gamma(:,k))\gamma_s(:,k));
     M_x_gamma_sk = W_fcn_eval\gamma_s(:,k);
 %         coder.extrinsic('dW_fcn');
     for i = 1:n
         dW_dxi = dW_fcn(i,gamma(:,k)); 
-%             dW_dxi = dW_fcn{i}(gamma(:,k)); 
         g((i-1)*(D+1)+(1:D+1)) = g((i-1)*(D+1)+(1:D+1))+M_x_gamma_sk'*([zeros(i-1,D+1);T_dot(1:D+1,k)';zeros(n-i,D+1)]*2-dW_dxi*M_x_gamma_sk*T(1:D+1,k)')*w(k);
     end
 end
