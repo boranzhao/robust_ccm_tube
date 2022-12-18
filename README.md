@@ -19,6 +19,6 @@ For each example,
 - Accelerate the geodesic and control law computation by generating C codes with `generate_code_for_geodesic_cal.m`.
 
 ## Suggestions
-SOS programming seems not reliable for CCM/RCCM synthesis for high dimensional systems (e.g., a 3D quadrotor). If you struggle a lot in getting a CCM/RCCM for your system, we suggest to try gridding the state space and solving an LMI problem instead of solving a SOS problem, as we did for the quadrotor example.
+SOS programming seems not reliable for CCM/RCCM synthesis for high dimensional systems (e.g., a 3D quadrotor). If you struggle in getting a CCM/RCCM for your system using SOS programming, you can try gridding the state space and solving an LMI problem instead, as I did for the quadrotor example.
 
 
