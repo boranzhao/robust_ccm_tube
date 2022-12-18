@@ -8,9 +8,7 @@ pvtol/metric/codegen/
 
 pvtol/metric/codegen/mex/energyGradient/build/win64/.ninja_log
 
-*.mat
 *.fig
-*.mexw64
 /utilities/codegen/mex/RiemannEnergy/html/*.mldatx
 codegen
 /pvtol/*.pdf
@@ -38,3 +36,5 @@ codegen
 /examples/quadrotor/metric/dW_dtheta.m
 /examples/quadrotor/metric/W_fcn1.m
 /examples/quadrotor/metric/Y_fcn1.m
+/pvtol/metric/.vscode/*.json
+/pvtol/metric/*.py

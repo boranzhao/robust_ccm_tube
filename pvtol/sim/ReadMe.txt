@@ -1,0 +1,1 @@
+To use pre-generated metrics and C codes under a specific setting, copy all the files from the corresponding folder, e.g., "ccm_0.8_plim_0.33pi", and paste them to the "sim" folder. 
