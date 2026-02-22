@@ -2,13 +2,10 @@
 
 % Synthesis of (robust) CCM for control of a planar VTOL
 
-%  Author: Pan Zhao, UIUC, Advanced Controls Research Lab,
-%  panzhao2@illinois.edu
-%  Codes for the paper:
-%  P. Zhao, et al. Tube-certified trajectory tracking for nonliner systems
-%  with robust control contraction metrics. Submitted to IEEE Robotics and
-%  Automation Letters, 2022. 
-%  Last update: Feb 16, 2022
+%  Author: Pan Zhao, University of Alabama
+%  pan.zhao@ua.edu; boranzhao9@gmail.com
+
+%  Last update: Feb 22, 2026
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear; clc;
 yalmip('clear');
@@ -69,7 +66,7 @@ if controller.type == CtrlDesignOpts.ccm
     dv_W_dt = dv_W_dx*f(Wstates_index);
 elseif controller.type == CtrlDesignOpts.rccm
     % dv_W_dt could depend on w
-    dv_W_dt = dv_W_dx*(f(Wstates_index)+Bw(Wstates_index)*w);  
+    dv_W_dt = dv_W_dx*(f(Wstates_index)+Bw(Wstates_index,:)*w);  
 end
 
 dW_dt = zeros(n);

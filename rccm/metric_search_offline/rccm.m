@@ -75,7 +75,7 @@ if state_set.consider_state_set == 1
         end
 
         % Lagrange multiplier
-        if class(Bw(state_set.W_states_index)) == "sdpvar" 
+        if norm(Bw(state_set.W_states_index,:)) > 0 
             % W depends on some states whose derivatives are directly influenced by w
             variables = [state_set.W_states;state_set.other_lim_states;plant.w;y1];
         else

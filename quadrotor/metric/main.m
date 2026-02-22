@@ -2,10 +2,10 @@
 
 % Synthesis of a (robust) CCM for control of a 3D quadrotor
 
-%  Author: Pan Zhao, UIUC, Advanced Controls Research Lab,
-%  panzhao2@illinois.edu
+%  Author: Pan Zhao, University of Alabama
+%  pan.zhao@ua.edu; boranzhao9@gmail.com
   
-%  Last update: Feb 18, 2022
+%  Last update: Feb 22, 2026
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear; %clc; 
 yalmip('clear')

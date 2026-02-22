@@ -3,7 +3,7 @@
 
 ## Codes for the paper 
 
-P. Zhao, A. Lakshmanan, K. Ackerman, A. Gahlawat, M. Pavone, and N. Hovakimyan, “[Tube-certified trajectory tracking for nonlinear systems with robust control contraction metrics](https://arxiv.org/abs/2109.04453),” IEEE Robotics and Automation Letter, 2022. arXiv:2109.04453.
+P. Zhao, A. Lakshmanan, K. Ackerman, A. Gahlawat, M. Pavone, and N. Hovakimyan, “[Tube-certified trajectory tracking for nonlinear systems with robust control contraction metrics](https://arxiv.org/abs/2109.04453),” IEEE Robotics and Automation Letter, 7(2): 5528–5535, 2022. arXiv:2109.04453.
 
 ## Dependencies
 - [YALMIP](https://yalmip.github.io/) + [Mosek](https://yalmip.github.io/solver/mosek/) solver for search of CCM or robust CCM (RCCM) using sum of squares (SOS) relaxation.

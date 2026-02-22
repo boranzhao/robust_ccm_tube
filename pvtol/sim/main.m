@@ -2,13 +2,10 @@
 
 % Simulation of planning and control of a planar quadrotor with (robust) CCM
 
-%  Author: Pan Zhao, UIUC, Advanced Controls Research Lab,
-%  panzhao2@illinois.edu
-%  Codes for the paper:
-%  P. Zhao, et al. Tube-certified trajectory tracking for nonliner systems
-%  with robust control contraction metrics. IEEE Robotics and
-%  Automation Letters, 2022. 
-%  Last update: Feb 18, 2022.
+%  Author: Pan Zhao, University of Alabama
+%  pan.zhao@ua.edu; boranzhao9@gmail.com
+
+%  Last update: Feb 22, 2026.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clc;clear;
 addpath plot_pvtol trajGen_pvtol trajGen_pvtol/nominal_trajs
